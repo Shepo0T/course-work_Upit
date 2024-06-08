@@ -1,5 +1,6 @@
 from src import utils
 
+
 def main(json_file):
     list_of_operations = utils.load_date(json_file)
     sort_by_executed = utils.executed_operation(list_of_operations)
@@ -11,14 +12,14 @@ def main(json_file):
             hiding_card_number_to = utils.hiding_card_number(operation['to'])
 
             print(f'{operation["date"]} {operation["description"]}\n'
-                f'{hiding_card_number_from} -> {hiding_card_number_to}\n'
-                f'{operation["operationAmount"]["amount"]} {operation["operationAmount"]["currency"]["name"]}\n')
+                  f'{hiding_card_number_from} -> {hiding_card_number_to}\n'
+                  f'{operation["operationAmount"]["amount"]} {operation["operationAmount"]["currency"]["name"]}\n')
         else:
             hiding_card_number_to = utils.hiding_card_number(operation['to'])
             print(f'{operation["date"]} {operation["description"]}\n'
                   f'{hiding_card_number_to}\n'
                   f'{operation["operationAmount"]["amount"]} {operation["operationAmount"]["currency"]["name"]}\n')
 
-if __name__ == '__main__':
-    main('./data/operations.json')
 
+if __name__ == '__main__':
+    main("../data/operations.json")
