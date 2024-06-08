@@ -1,36 +1,31 @@
 import json
 from datetime import datetime
-import os
+from pathlib import Path
 
 
 def load_date(json_file):
     """ Функция открытя JSON файла """
-    file_operations = os.path.abspath(json_file)
-    with open(file_operations, 'r') as file:
+    BASE_PATH = Path(__file__).parent
+    OPERATIONS_PATH_FILE = BASE_PATH.joinpath(json_file)
+    with open(OPERATIONS_PATH_FILE, 'r') as file:
         list_of_operations = json.loads(file.read())
         return list_of_operations
 
 
 def executed_operation(list_of_operation):
-    """PASS"""
-    list = []
+    """Функция отбирающей только по EXECUTED"""
+    executed_list = []
     for operation in list_of_operation:
         if operation.get('state') == 'EXECUTED':
-            list.append(operation)
-    return list
+            executed_list.append(operation)
+    return executed_list
+
 
 def last_five_operation(list_of_operations):
     """ Функция сортирующая по дате последние 5 операций """
-
     sorted_date = sorted(list_of_operations, key=lambda x: x.get('date', ''), reverse=True)
-
-    last_operation = sorted_date[:6]
+    last_operation = sorted_date[:5]
     return last_operation
-
-
-# list = last_five_operation(executed_operation(load_date('../data/operations.json')))
-# for i in list:
-#     print(i)
 
 
 def sorted_date(list_operations):

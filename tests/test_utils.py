@@ -1,43 +1,56 @@
+from pathlib import Path
 from src import utils
 import pytest
 
+
 def test_load_date():
     """ Tест на проверку несуществующего файла"""
+    BASE_PATH = Path(__file__).parent
+    OPERATIONS_PATH_FILE = BASE_PATH.joinpath("operations.json")
     with pytest.raises(FileNotFoundError):
-        utils.load_date()
+        utils.load_date(OPERATIONS_PATH_FILE)
+
+
+def test_executed_operation():
+    """Тест функции отбирающей только по EXECUTED"""
+    assert utils.executed_operation(
+        [{"state": "EXECUTED", "amount": "31957.58"}, {"state": "CANCELED", "amount": "67314.70"},
+         {"state": "EXECUTED", "amount": "90582.51"}]) == [{"state": "EXECUTED", "amount": "31957.58"},
+                                                           {"state": "EXECUTED", "amount": "90582.51"}]
+
 
 def test_last_five_operations():
     """ Проверка на сортировку 5 последних выполненых операций """
 
     assert utils.last_five_operation([{
-    "id": 441945886,
-    "state": "EXECUTED",
-    "date": "2019-08-26T10:50:58.294041",
-    "operationAmount": {
-      "amount": "31957.58",
-      "currency": {
-        "name": "руб.",
-        "code": "RUB"
-      }
-    },
-    "description": "Перевод организации",
-    "from": "Maestro 1596837868705199",
-    "to": "Счет 64686473678894779589"
-  }]) == [{
-    "id": 441945886,
-    "state": "EXECUTED",
-    "date": "2019-08-26T10:50:58.294041",
-    "operationAmount": {
-      "amount": "31957.58",
-      "currency": {
-        "name": "руб.",
-        "code": "RUB"
-      }
-    },
-    "description": "Перевод организации",
-    "from": "Maestro 1596837868705199",
-    "to": "Счет 64686473678894779589"
-  }]
+        "id": 441945886,
+        "state": "EXECUTED",
+        "date": "2019-08-26T10:50:58.294041",
+        "operationAmount": {
+            "amount": "31957.58",
+            "currency": {
+                "name": "руб.",
+                "code": "RUB"
+            }
+        },
+        "description": "Перевод организации",
+        "from": "Maestro 1596837868705199",
+        "to": "Счет 64686473678894779589"
+    }]) == [{
+        "id": 441945886,
+        "state": "EXECUTED",
+        "date": "2019-08-26T10:50:58.294041",
+        "operationAmount": {
+            "amount": "31957.58",
+            "currency": {
+                "name": "руб.",
+                "code": "RUB"
+            }
+        },
+        "description": "Перевод организации",
+        "from": "Maestro 1596837868705199",
+        "to": "Счет 64686473678894779589"
+    }]
 
 
 def test_sorted_date():
